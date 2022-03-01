@@ -26,6 +26,7 @@ def show_dataframe_chart(df: pd.DataFrame, title: str):
     plt.plot(range(df.shape[0]),(df['Open']))
     plt.xlabel("Days", fontsize=18)
     plt.ylabel("Open price", fontsize=18)
+    plt.xticks(range(0,df.shape[0],500),df['Date'].loc[::500])
     plt.title(title)
     plt.show()
 
@@ -36,8 +37,7 @@ def separate_data(df: pd.DataFrame):
     
 
 input = load_dataset("input")
+show_dataframe_chart(input, "Input")
 x_train, x_test = separate_data(input)
 show_dataframe_info(x_train, "Train data")
 show_dataframe_info(x_test, "Test data")
-show_dataframe_chart(x_train, "Train data")
-show_dataframe_chart(x_test, "Test data")
