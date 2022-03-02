@@ -30,14 +30,22 @@ def show_dataframe_chart(df: pd.DataFrame, title: str):
     plt.title(title)
     plt.show()
 
-def separate_data(df: pd.DataFrame):
-    last = df.tail(50)
-    df.drop(df.tail(50).index, inplace=True)
-    return df, last
+def separate_data(df: pd.DataFrame, num: int):
+    first = df.head(len(df) - num)
+    last = df.tail(num)
+    return first, last
+
+def prepare_data(df: pd.DataFrame):
+    x = df.iloc[:, 0:1]
+    y = df.iloc[:, 1:2]
+    return x, y
     
 
 input = load_dataset("input")
-show_dataframe_chart(input, "Input")
-x_train, x_test = separate_data(input)
-show_dataframe_info(x_train, "Train data")
-show_dataframe_info(x_test, "Test data")
+#show_dataframe_chart(input, "Input")
+train_set, test_set = separate_data(input, 50)
+#show_dataframe_info(x_train, "Train data")
+#show_dataframe_info(x_test, "Test data")
+
+x_train, y_train = prepare_data(train_set)
+x_test, y_test = prepare_data(test_set)
