@@ -36,14 +36,14 @@ def separate_data(df: pd.DataFrame, num: int):
     return first, last
 
 def prepare_data(df: pd.DataFrame):
-    x = df.iloc[:, 0:1]
-    y = df.iloc[:, 1:2]
+    x = df.iloc[:, 0]
+    y = df.iloc[:, 1]
     return x, y
     
 
 input = load_dataset("input")
 #show_dataframe_chart(input, "Input")
-train_set, test_set = separate_data(input, 50)
+train_set, test_set = separate_data(input, int(len(input) * 0.1))
 #show_dataframe_info(x_train, "Train data")
 #show_dataframe_info(x_test, "Test data")
 
