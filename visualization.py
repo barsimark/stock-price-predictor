@@ -1,11 +1,12 @@
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
 
 ## Show dataframe head and shape
-def show_dataframe_info(df: pd.DataFrame, title: str):
+def show_dataframe_info(data: np.array, title: str):
     print("Title:", title)
-    print(df.head())
-    print("Length: ", df.shape)
+    print(data[:10])
+    print("Shape: ", data.shape)
     print("")
 
 ## Show chart of stock price

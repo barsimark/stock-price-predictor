@@ -1,6 +1,6 @@
 import tensorflow as tf
 import pandas as pd
-import matplotlib.pyplot as plt
+import numpy as np
 import os
 
 import visualization as vs
@@ -24,8 +24,8 @@ def separate_data(df: pd.DataFrame, num: int):
     return first, last
 
 def prepare_data(df: pd.DataFrame):
-    x = df.iloc[:, 0]
-    y = df.iloc[:, 1]
+    x = np.array(df.iloc[:, 0:1].values)
+    y = np.array(df.iloc[:, 1:2].values)
     return x, y
     
 
@@ -36,6 +36,6 @@ train_set, test_set = separate_data(input, int(len(input) * 0.1))
 x_train, y_train = prepare_data(train_set)
 x_test, y_test = prepare_data(test_set)
 vs.show_dataframe_info(x_train, "x_train")
-vs.show_dataframe_info(y_test, "y_train")
+vs.show_dataframe_info(y_train, "y_train")
 vs.show_dataframe_info(x_test, "x_test")
 vs.show_dataframe_info(y_test, "y_test")
