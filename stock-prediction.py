@@ -1,13 +1,13 @@
-import tensorflow as tf
 import pandas as pd
 import numpy as np
 import os
 
+from sklearn.preprocessing import MinMaxScaler
+
 import visualization as vs
 
-def get_info():
-    print(tf.__version__)
-    print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
+TEST_SET_RATIO = 0.1
+TRAIN_SEQUENCE_LENGTH = 20
 
 def load_dataset(dir: str) -> pd.DataFrame:
     df = []
@@ -18,24 +18,29 @@ def load_dataset(dir: str) -> pd.DataFrame:
     df.sort_values(by='Date', inplace=True)
     return df
 
-def separate_data(df: pd.DataFrame, num: int):
-    first = df.head(len(df) - num)
-    last = df.tail(num)
+def get_prices_from_dataframe(df: pd.DataFrame) -> np.array:
+    return np.array(df.iloc[:, 1:2].values)
+
+def separate_data(arr: np.array, num: int):
+    first = arr[num:]
+    last = arr[:num]
     return first, last
 
-def prepare_data(df: pd.DataFrame):
-    x = np.array(df.iloc[:, 0:1].values)
-    y = np.array(df.iloc[:, 1:2].values)
-    return x, y
-    
+def create_train_matrices(train_set: np.array):
+    x_train = []
+    y_train = []
+    for i in range(TRAIN_SEQUENCE_LENGTH, train_set.shape[0]):
+        x_train.append(train_set[i-TRAIN_SEQUENCE_LENGTH:i, 0])
+        y_train.append(train_set[i, 0])
+    return np.array(x_train), np.array(y_train)
 
 input = load_dataset("input")
-vs.show_dataframe_chart(input, "Input")
-train_set, test_set = separate_data(input, int(len(input) * 0.1))
+input_prices = get_prices_from_dataframe(input)
+scaler = MinMaxScaler(feature_range=(0, 1))
+scaled_prices = np.array(scaler.fit_transform(input_prices))
+train_set, test_set = separate_data(scaled_prices, int(scaled_prices.shape[0] * TEST_SET_RATIO))
 
-x_train, y_train = prepare_data(train_set)
-x_test, y_test = prepare_data(test_set)
-vs.show_dataframe_info(x_train, "x_train")
-vs.show_dataframe_info(y_train, "y_train")
-vs.show_dataframe_info(x_test, "x_test")
-vs.show_dataframe_info(y_test, "y_test")
+x_train, y_train = create_train_matrices(scaled_prices)
+x_train = np.reshape(x_train, (-1, TRAIN_SEQUENCE_LENGTH, 1))
+vs.show_dataframe_info(x_train)
+vs.show_dataframe_info(y_train)

@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 ## Show dataframe head and shape
-def show_dataframe_info(data: np.array, title: str):
+def show_dataframe_info(data: np.array, title: str = "untitled"):
     print("Title:", title)
     print(data[:10])
     print("Shape: ", data.shape)
