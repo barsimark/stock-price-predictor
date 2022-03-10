@@ -18,3 +18,8 @@ def show_dataframe_chart(df: pd.DataFrame, title: str):
     plt.xticks(range(0,df.shape[0],500),df['Date'].loc[::500])
     plt.title(title)
     plt.show()
+
+def show_np_array(arr1: np.array, arr2: np.array):
+    plt.plot(arr1)
+    plt.plot(arr2)
+    plt.show()
