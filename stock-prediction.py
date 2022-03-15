@@ -16,6 +16,7 @@ def load_dataset(dir: str) -> pd.DataFrame:
         df.append(pd.read_csv(dir + "/" + file))
     df = pd.concat(df)
     df['Date'] = pd.to_datetime(df.Date)
+    df.drop_duplicates(inplace=True)
     df.sort_values(by='Date', inplace=True)
     return df
 
@@ -35,7 +36,7 @@ def create_x_y_matrices(train_set: np.array):
         y_train.append(train_set[i, 0])
     return np.array(x_train), np.array(y_train)
 
-input = load_dataset("input")
+input = load_dataset("input/Nvidia")
 input_prices = get_prices_from_dataframe(input)
 scaler = MinMaxScaler(feature_range=(0, 1))
 scaled_prices = np.array(scaler.fit_transform(input_prices))
@@ -47,11 +48,11 @@ x_test, y_test = create_x_y_matrices(test_set)
 x_test = np.reshape(x_test, (-1, TRAIN_SEQUENCE_LENGTH, 1))
 
 model = BasicModel(TRAIN_SEQUENCE_LENGTH)
-model.train(x_train, y_train, epochs=50)
+model.train(x_train, y_train)
 predicted = model.predict(x_test)
 predicted = scaler.inverse_transform(predicted)
 
 y_test = np.reshape(y_test, (-1, 1))
 y_test = scaler.inverse_transform(y_test)
-vs.show_np_array(y_test, predicted)
-print(predicted)
+vs.show_np_arrays(y_test, predicted, "Actual price", "Predicted price", "Nvidia price prediction")
+vs.show_np_array(model.get_losses(), "Training loss")
