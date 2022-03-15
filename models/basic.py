@@ -5,9 +5,9 @@ from keras.layers import LSTM, Dense, Dropout
 class BasicModel():
     def __init__(self, sequence_length) -> None:
         self.model = Sequential()
-        self.model.add(LSTM(50, return_sequences=True, input_shape = (sequence_length, 1)))
+        self.model.add(LSTM(60, return_sequences=True, input_shape = (sequence_length, 1)))
         self.model.add(Dropout(0.2))
-        self.model.add(LSTM(50, return_sequences=True))
+        self.model.add(LSTM(60, return_sequences=True))
         self.model.add(Dropout(0.2))
         self.model.add(LSTM(60))
         self.model.add(Dropout(0.2))

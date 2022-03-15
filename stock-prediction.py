@@ -48,7 +48,7 @@ x_test, y_test = create_x_y_matrices(test_set)
 x_test = np.reshape(x_test, (-1, TRAIN_SEQUENCE_LENGTH, 1))
 
 model = BasicModel(TRAIN_SEQUENCE_LENGTH)
-model.train(x_train, y_train)
+model.train(x_train, y_train, epochs=50, batch=16)
 predicted = model.predict(x_test)
 predicted = scaler.inverse_transform(predicted)
 
