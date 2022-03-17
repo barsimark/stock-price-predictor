@@ -19,12 +19,13 @@ def show_dataframe_chart(df: pd.DataFrame, title: str = ""):
     plt.title(title)
     plt.show()
 
-def show_np_arrays(arr1: np.array, arr2: np.array, label1: str = "", label2: str = "", title: str = ""):
+def show_np_arrays(arr1: np.array, arr2: np.array, label1: str = "", label2: str = "", 
+title: str = "", xlabel: str = "Days", ylabel: str = "Open price"):
     plt.figure(figsize = (9,5))
     plt.plot(arr1, label=label1)
     plt.plot(arr2, label=label2)
-    plt.xlabel("Days", fontsize=18)
-    plt.ylabel("Open price", fontsize=18)
+    plt.xlabel(xlabel, fontsize=18)
+    plt.ylabel(ylabel, fontsize=18)
     plt.title(title)
     plt.legend(loc = "upper left")
     plt.show()
