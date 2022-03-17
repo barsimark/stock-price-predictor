@@ -36,6 +36,8 @@ Performance on the test dataset:
 
 ![Basic model performance](https://github.com/barsimark/stock-price-predictor/blob/master/images/Basic-model-prediction.png)
 
+![Basic model loss](https://github.com/barsimark/stock-price-predictor/blob/master/images/Basic-model-loss.png)
+
 ## Plans for the future
 
 - Improve the basic model to get more accurate results

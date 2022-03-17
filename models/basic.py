@@ -28,4 +28,4 @@ class BasicModel():
         self.model.evaluate(x_test, y_test)
 
     def get_losses(self):
-        return np.array(self.history.history['loss'])
+        return np.array(self.history.history['loss']), np.array(self.history.history['val_loss'])
