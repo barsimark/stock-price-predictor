@@ -38,9 +38,10 @@ Performance on the test dataset:
 
 ![Basic model loss](https://github.com/barsimark/stock-price-predictor/blob/master/images/Basic-model-loss.png)
 
+![Basic model regression](https://github.com/barsimark/stock-price-predictor/blob/master/images/Basic-model-regression-plot.png)
+
 ## Plans for the future
 
-- Improve the basic model to get more accurate results
 - Add new model with Nvidia and QQQ as inputs, and Nvidia prediction as output
 - Compare the results of each model and determine the best
 - Reduce or eliminate outliers with using something like moving average
