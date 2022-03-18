@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 ## Show dataframe head and shape
 def show_dataframe_info(data: np.array, title: str = "untitled"):
@@ -35,3 +36,6 @@ def show_np_array(arr: np.array, title: str = ""):
     plt.plot(arr)
     plt.title(title)
     plt.show()
+
+def show_regression_plot(arr1: np.array, arr2: np.array):
+    sns.regplot(x=arr1, y=arr2)
