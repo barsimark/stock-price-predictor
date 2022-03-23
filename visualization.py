@@ -10,7 +10,7 @@ def show_dataframe_info(data: np.array, title: str = "untitled"):
     print("Shape: ", data.shape)
     print("")
 
-## Show chart of stock price
+## Show chart of dataframe
 def show_dataframe_chart(df: pd.DataFrame, title: str = ""):
     plt.figure(figsize = (9,5))
     plt.plot(range(df.shape[0]),(df['Open']))
@@ -20,22 +20,19 @@ def show_dataframe_chart(df: pd.DataFrame, title: str = ""):
     plt.title(title)
     plt.show()
 
-def show_np_arrays(arr1: np.array, arr2: np.array, label1: str = "", label2: str = "", 
-title: str = "", xlabel: str = "Days", ylabel: str = "Open price"):
+## Show chart of numpy arrays
+def show_np_arrays(data, labels, title:str, xlabel: str = "Days", ylabel: str = "Open price"):
     plt.figure(figsize = (9,5))
-    plt.plot(arr1, label=label1)
-    plt.plot(arr2, label=label2)
     plt.xlabel(xlabel, fontsize=18)
     plt.ylabel(ylabel, fontsize=18)
     plt.title(title)
+    data = np.array(data)
+    labels = np.array(labels)
+    for i in range(data.shape[0]):
+        plt.plot(data[i], label=labels[i])
     plt.legend(loc = "upper left")
     plt.show()
 
-def show_np_array(arr: np.array, title: str = ""):
-    plt.figure(figsize = (9,5))
-    plt.plot(arr)
-    plt.title(title)
-    plt.show()
-
+## Show regression chart
 def show_regression_plot(arr1: np.array, arr2: np.array):
     sns.regplot(x=arr1, y=arr2)

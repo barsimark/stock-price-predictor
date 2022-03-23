@@ -16,8 +16,8 @@ class BasicModel():
         self.model.compile(optimizer='adam', loss='mean_squared_error')
         self.model.summary()
 
-    def train(self, x_train: np.array, y_train: np.array, epochs: int = 200, batch: int = 32):
-        es = EarlyStopping(monitor='val_loss', patience=15, restore_best_weights=True)
+    def train(self, x_train: np.array, y_train: np.array, epochs: int = 300, batch: int = 32):
+        es = EarlyStopping(monitor='val_loss', patience=20, restore_best_weights=True)
         self.history = self.model.fit(x_train, y_train, validation_split=0.1, epochs=epochs, batch_size=batch, callbacks=[es])
 
     def predict(self, dataset: np.array) -> np.array:
@@ -29,3 +29,14 @@ class BasicModel():
 
     def get_losses(self):
         return np.array(self.history.history['loss']), np.array(self.history.history['val_loss'])
+
+    def free_running_prediction(self, dataset: np.array, length: int) -> np.array:
+        future = []
+        data = np.copy(dataset)
+        for _ in range(length):
+            result = self.predict(np.reshape(data, (1, -1, 1)))
+            data = np.delete(data, (0), axis=0)
+            data = np.append(data, result, axis=0)
+            future.append(result)
+            print(result)
+        return np.reshape(np.array(future), (-1, 1))
