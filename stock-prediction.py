@@ -6,6 +6,7 @@ from sklearn.preprocessing import MinMaxScaler
 
 import visualization as vs
 from models.lstm import BasicModel
+from models.esn import ESNModel
 
 TEST_SET_RATIO = 0.1
 TRAIN_SEQUENCE_LENGTH = 20
@@ -36,7 +37,7 @@ def create_x_y_matrices(train_set: np.array):
         y_train.append(train_set[i, 0])
     return np.array(x_train), np.array(y_train)
 
-def prediction_with_basic_lstm(x_train:np.array, y_train:np.array, x_test:np.array, y_test:np.array):
+def prediction_with_basic_lstm(x_train:np.array, y_train:np.array, x_test:np.array, y_test:np.array, scaler:MinMaxScaler):
     model = BasicModel(TRAIN_SEQUENCE_LENGTH)
     model.train(x_train, y_train, epochs=1)
     model.evaluate(x_test, y_test)
@@ -52,6 +53,7 @@ def prediction_with_basic_lstm(x_train:np.array, y_train:np.array, x_test:np.arr
     vs.show_np_arrays([y_test, predicted, future], ["Actual price", "Predicted price", "Free running price"], "Nvidia price prediction")
     vs.show_np_arrays([loss, val_loss], ["Training", "Validation"], "Model's loss", "Epoch", "Loss")
 
+
 input = load_dataset("input/Nvidia")
 input_prices = get_prices_from_dataframe(input)
 scaler = MinMaxScaler(feature_range=(0, 1))
@@ -63,4 +65,6 @@ x_test, y_test = create_x_y_matrices(test_set)
 x_train = np.reshape(x_train, (-1, TRAIN_SEQUENCE_LENGTH, 1))
 x_test = np.reshape(x_test, (-1, TRAIN_SEQUENCE_LENGTH, 1))
 
-prediction_with_basic_lstm(x_train, y_train, x_test, y_test)
+model = ESNModel()
+preds = model.train_and_predict(TRAIN_SEQUENCE_LENGTH, 2, 4, np.reshape(x_train, (-1)))
+print(preds)
