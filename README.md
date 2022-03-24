@@ -46,7 +46,7 @@ Using pyESN Echo State Network(ESN) (https://github.com/cknd/pyESN) to give stoc
 
 Performance on the test dataset:
 
-![ESN model prediction](https://github.com/barsimark/stock-price-predictor/blob/master/images/ESN-model-prediction.png)
+![ESN model prediction](images/ESN-model-prediction.png)
 
 ## Plans for the future
 
