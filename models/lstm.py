@@ -38,5 +38,4 @@ class BasicModel():
             data = np.delete(data, (0), axis=0)
             data = np.append(data, result, axis=0)
             future.append(result)
-            print(result)
         return np.reshape(np.array(future), (-1, 1))
