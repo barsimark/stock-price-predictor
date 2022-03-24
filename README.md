@@ -2,10 +2,7 @@
 
 ## Introduction
 
-The aim of this project is to use deep learning to predict future prices of stocks.
-The repository is constantly evolving, as I try out various different approaches, and technologies.
-I am creating multiple models for different stocks, and indexes.
-Predictions will be made for individual shares, as well as utilizing multiple datasets to give more accurate price forecasts.
+The aim of this project is to use deep learning to predict future prices of stocks. The repository is constantly evolving, as I try out various different approaches, and technologies. I am creating multiple models for different stocks, and indexes. Predictions will be made for individual shares, as well as utilizing multiple datasets to give more accurate price forecasts.
 
 ### Technologies
 
@@ -24,13 +21,15 @@ The datasets are publicly available at MarketWatch in a downloadable .csv format
 
 ## Models
 
-### Basic model
+### Basic LSTM model
 
-Currently, there is only a single model available, although I am constantly working on it to improve its performance.
+Simple LSTM-based model to predict the prices of Nvidia stocks. This model will be used as a baseline for future models.
 
 - Input: sequnce of stock price data
 - Hidden layers: multiple LSTM, and Dropout layers
 - Output: predicted stock price for the next day
+
+As it can be seen on the performance chart, this model cannot be used in free running mode, meaning that the prediction only makes sense for the next day.
 
 Performance on the test dataset:
 
@@ -43,8 +42,8 @@ Performance on the test dataset:
 ## Plans for the future
 
 - Add new model with Nvidia and QQQ as inputs, and Nvidia prediction as output
+- Add new model utilizing other RNN-based approaches
 - Compare the results of each model and determine the best
-- Reduce or eliminate outliers with using something like moving average
 - Give predictions for the future and use it in real trading
 
 ## Author

@@ -5,7 +5,7 @@ import os
 from sklearn.preprocessing import MinMaxScaler
 
 import visualization as vs
-from models.basic import BasicModel
+from models.lstm import BasicModel
 
 TEST_SET_RATIO = 0.1
 TRAIN_SEQUENCE_LENGTH = 20
