@@ -34,11 +34,11 @@ As it can be seen on the performance chart, this model cannot be used in free ru
 
 Performance on the test dataset:
 
-![Basic model performance](https://github.com/barsimark/stock-price-predictor/blob/master/images/Basic-model-prediction.png)
+![Basic model performance](images/Basic-model-prediction.png)
 
-![Basic model loss](https://github.com/barsimark/stock-price-predictor/blob/master/images/Basic-model-loss.png)
+![Basic model loss](images/Basic-model-loss.png)
 
-![Basic model regression](https://github.com/barsimark/stock-price-predictor/blob/master/images/Basic-model-regression-plot.png)
+![Basic model regression](images/Basic-model-regression-plot.png)
 
 ### ESN model
 
