@@ -6,6 +6,7 @@ The aim of this project is to use deep learning to predict future prices of stoc
 
 ### Technologies
 
+- Recurrent Neural Networks: Long Short Term Memory, Echo State Network
 - Python 3.10
 - Tensorflow 2.8
 
@@ -33,11 +34,19 @@ As it can be seen on the performance chart, this model cannot be used in free ru
 
 Performance on the test dataset:
 
-![Basic model performance](https://github.com/barsimark/stock-price-predictor/blob/master/images/Basic-model-prediction.png)
+![Basic model performance](images/Basic-model-prediction.png)
 
-![Basic model loss](https://github.com/barsimark/stock-price-predictor/blob/master/images/Basic-model-loss.png)
+![Basic model loss](images/Basic-model-loss.png)
 
-![Basic model regression](https://github.com/barsimark/stock-price-predictor/blob/master/images/Basic-model-regression-plot.png)
+![Basic model regression](images/Basic-model-regression-plot.png)
+
+### ESN model
+
+Using pyESN Echo State Network(ESN) (https://github.com/cknd/pyESN) to give stock predictions.
+
+Performance on the test dataset:
+
+![ESN model prediction](images/ESN-model-prediction.png)
 
 ## Plans for the future
 
