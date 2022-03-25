@@ -10,7 +10,6 @@ from models.esn import ESNModel
 
 TEST_SET_RATIO = 0.1
 TRAIN_SEQUENCE_LENGTH = 20
-ESN_FUTURE = 2
 
 def load_dataset(dir: str) -> pd.DataFrame:
     df = []
@@ -54,20 +53,33 @@ def prediction_with_basic_lstm(x_train:np.array, y_train:np.array, x_test:np.arr
     vs.show_np_arrays([y_test, predicted, future], ["Actual price", "Predicted price", "Free running price"], "Nvidia price prediction")
     vs.show_np_arrays([loss, val_loss], ["Training", "Validation"], "Model's loss", "Epoch", "Loss")
 
-def prediction_with_esn(x_train:np.array, y_train:np.array, x_test:np.array, y_test:np.array, data:np.array, scaler:MinMaxScaler):
+def prediction_with_esn(x_train:np.array, y_train:np.array, x_test:np.array, y_test:np.array, scaled:np.array, scaler:MinMaxScaler):
     model = ESNModel(500)
-    preds = model.train_and_predict(
+    ESN_FUTURE = 2
+    preds_short = model.train_and_predict(
         x_train.shape[0]//ESN_FUTURE*ESN_FUTURE, 
         ESN_FUTURE, 
-        x_test.shape[0]//ESN_FUTURE*ESN_FUTURE, 
-        np.reshape(data[20:], (-1)),
+        x_test.shape[0]//ESN_FUTURE*ESN_FUTURE,
+        np.reshape(scaled[20:], (-1)),
+        truth=y_test,
+        offset=TRAIN_SEQUENCE_LENGTH
+    )
+    ESN_FUTURE = 5
+    preds_long = model.train_and_predict(
+        x_train.shape[0]//ESN_FUTURE*ESN_FUTURE, 
+        ESN_FUTURE, 
+        x_test.shape[0]//ESN_FUTURE*ESN_FUTURE,
+        np.reshape(scaled[20:], (-1)),
+        truth=y_test,
         offset=TRAIN_SEQUENCE_LENGTH
     )
     y_test = np.reshape(y_test, (-1, 1))
-    preds = np.reshape(preds, (-1, 1))
+    preds_short = np.reshape(preds_short, (-1, 1))
+    preds_long = np.reshape(preds_long, (-1, 1))
     y_test = scaler.inverse_transform(y_test)
-    preds = scaler.inverse_transform(preds)
-    vs.show_np_arrays([y_test, preds], ["Actual price", "Predicted price"], "Nvidia price prediction")
+    preds_short = scaler.inverse_transform(preds_short)
+    preds_long = scaler.inverse_transform(preds_long)
+    vs.show_np_arrays([y_test, preds_short, preds_long], ["Actual price", "Prediction for the next 2 days", "Prediction for the next 5 days"], "Nvidia price prediction")
 
 input = load_dataset("input/Nvidia")
 input_prices = get_prices_from_dataframe(input)
