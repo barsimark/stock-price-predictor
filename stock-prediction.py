@@ -1,7 +1,6 @@
 import pandas as pd
 import numpy as np
 import os
-
 from sklearn.preprocessing import MinMaxScaler
 
 import visualization as vs
@@ -36,6 +35,25 @@ def create_x_y_matrices(train_set: np.array):
         x_train.append(train_set[i-TRAIN_SEQUENCE_LENGTH:i, 0])
         y_train.append(train_set[i, 0])
     return np.array(x_train), np.array(y_train)
+
+def get_moving_average(data:np.array, window:int) -> np.array:
+    averages = []
+    for i in range(window):
+        averages.append(data[i])
+    for i in range(data.shape[0] - window):
+        current = data[i:i+window]
+        averages.append(sum(current) / window)
+    return np.array(averages)
+
+def prediction_with_moving_average(data:np.array):
+    average_5 = get_moving_average(data, 5)
+    average_20 = get_moving_average(data, 20)
+    average_50 = get_moving_average(data, 50)
+    vs.show_np_arrays(
+        [data, average_5, average_20, average_50], 
+        ["Price", "5-day moving average", "20-day moving average", "50-day moving average"], 
+        "Moving average", 
+        ylabel="Price")
 
 def prediction_with_basic_lstm(x_train:np.array, y_train:np.array, x_test:np.array, y_test:np.array, scaler:MinMaxScaler):
     model = BasicModel(TRAIN_SEQUENCE_LENGTH)
@@ -92,4 +110,4 @@ x_test, y_test = create_x_y_matrices(test_set)
 x_train = np.reshape(x_train, (-1, TRAIN_SEQUENCE_LENGTH, 1))
 x_test = np.reshape(x_test, (-1, TRAIN_SEQUENCE_LENGTH, 1))
 
-prediction_with_esn(x_train, y_train, x_test, y_test, scaled_prices, scaler)
+prediction_with_moving_average(input_prices)
