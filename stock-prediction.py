@@ -50,7 +50,7 @@ def prediction_with_moving_average(data:np.array):
     average_20 = get_moving_average(data, 20)
     average_50 = get_moving_average(data, 50)
     vs.show_np_arrays(
-        [data, average_5, average_20, average_50], 
+        [data[-160:], average_5[-160:], average_20[-160:], average_50[-160:]], 
         ["Price", "5-day moving average", "20-day moving average", "50-day moving average"], 
         "Moving average", 
         ylabel="Price")

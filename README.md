@@ -22,6 +22,12 @@ The datasets are publicly available at MarketWatch in a downloadable .csv format
 
 ## Models
 
+### Moving average
+
+Although moving average is a very simple concept, it is extensively used in the financial world to get a basic understanding of short- and long-term movements and momentum.
+
+![Moving average](images/Moving-averages.png)
+
 ### Basic LSTM model
 
 Simple LSTM-based model to predict the prices of Nvidia stocks. This model will be used as a baseline for future models.
@@ -54,7 +60,7 @@ The model clearly gives more accurate predictions for the shorter term. More tha
 
 ## Plans for the future
 
-- Add baseline models: moving average, linear extrapolation
+- Add baseline models: extrapolation
 - Add new LSTM model with Nvidia and QQQ as inputs, and Nvidia prediction as output
 - Optimize the hyperparameters of the ESN model
 - Compare the results of each model and determine the best
