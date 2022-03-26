@@ -26,9 +26,7 @@ def show_np_arrays(data, labels, title:str, xlabel: str = "Days", ylabel: str = 
     plt.xlabel(xlabel, fontsize=18)
     plt.ylabel(ylabel, fontsize=18)
     plt.title(title)
-    data = np.array(data)
-    labels = np.array(labels)
-    for i in range(data.shape[0]):
+    for i in range(len(data)):
         plt.plot(data[i], label=labels[i])
     plt.legend(loc = "upper left")
     plt.show()
