@@ -53,8 +53,8 @@ def prediction_with_interpolation(data:np.array, length:int, future:int):
     y2 = cls.iterative_interpolation(data, length, future, 2)
     vs.show_np_arrays(
         [data[-length:], y1, y2],
-        ["Actual price", "Linear interpolation", "Quadratic interpolation"],
-        "Nvidia prices using " + str(future) + "-day interpolation"
+        ["Actual price", "Linear extrapolation", "Quadratic extrapolation"],
+        "Nvidia prices using " + str(future) + "-day extrapolation"
     )
 
 def prediction_with_basic_lstm(x_train:np.array, y_train:np.array, x_test:np.array, y_test:np.array, scaler:MinMaxScaler):

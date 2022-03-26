@@ -20,13 +20,21 @@ The datasets are publicly available at MarketWatch in a downloadable .csv format
 
 ![QQQ prices](images/QQQ-prices.png)
 
-## Models
+## Classic approach
 
 ### Moving average
 
-Although moving average is a very simple concept, it is extensively used in the financial world to get a basic understanding of short- and long-term movements and momentum.
+Moving average is a very simple concept, yet it is often used to understand short- and longer-term momentum. It can even be used as a way to predict stock price movements with mean-reversion.
 
 ![Moving average](images/Moving-averages.png)
+
+### Extrapolation
+
+This method is probably the go-to way to use when it comes to predicting the next n elements in a data stream. I used it to predict the prices for the next 2 days from the previous ~1600 data points.
+
+![Extrapolation](images/2-day-extrapolation.png)
+
+## Deep learning models
 
 ### Basic LSTM model
 
@@ -60,7 +68,6 @@ The model clearly gives more accurate predictions for the shorter term. More tha
 
 ## Plans for the future
 
-- Add baseline models: extrapolation
 - Add new LSTM model with Nvidia and QQQ as inputs, and Nvidia prediction as output
 - Optimize the hyperparameters of the ESN model
 - Compare the results of each model and determine the best
