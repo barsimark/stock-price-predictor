@@ -70,8 +70,18 @@ def prediction_with_basic_lstm(x_train:np.array, y_train:np.array, x_test:np.arr
     predicted = scaler.inverse_transform(predicted)
     future = scaler.inverse_transform(future)
     loss, val_loss = model.get_losses()
-    vs.show_np_arrays([y_test, predicted, future], ["Actual price", "Predicted price", "Free running price"], "Nvidia price prediction")
-    vs.show_np_arrays([loss, val_loss], ["Training", "Validation"], "Model's loss", "Epoch", "Loss")
+    vs.show_np_arrays(
+        [y_test, predicted, future], 
+        ["Actual price", "Predicted price", "Free running price"], 
+        "Nvidia price prediction"
+    )
+    vs.show_np_arrays(
+        [loss, val_loss], 
+        ["Training", "Validation"], 
+        "Model's loss", 
+        "Epoch", 
+        "Loss"
+    )
 
 def prediction_with_esn(x_train:np.array, y_train:np.array, x_test:np.array, y_test:np.array, scaled:np.array, scaler:MinMaxScaler):
     model = ESNModel(500)
@@ -99,7 +109,11 @@ def prediction_with_esn(x_train:np.array, y_train:np.array, x_test:np.array, y_t
     y_test = scaler.inverse_transform(y_test)
     preds_short = scaler.inverse_transform(preds_short)
     preds_long = scaler.inverse_transform(preds_long)
-    vs.show_np_arrays([y_test, preds_short, preds_long], ["Actual price", "Prediction for the next 2 days", "Prediction for the next 5 days"], "Nvidia price prediction")
+    vs.show_np_arrays(
+        [y_test, preds_short, preds_long], 
+        ["Actual price", "Prediction for the next 2 days", "Prediction for the next 5 days"], 
+        "Nvidia price prediction"
+    )
 
 input = load_dataset("input/Nvidia")
 input_prices = get_prices_from_dataframe(input)
@@ -112,4 +126,3 @@ x_test, y_test = create_x_y_matrices(test_set)
 x_train = np.reshape(x_train, (-1, TRAIN_SEQUENCE_LENGTH, 1))
 x_test = np.reshape(x_test, (-1, TRAIN_SEQUENCE_LENGTH, 1))
 
-prediction_with_interpolation(input_prices, y_test.shape[0], 2)
