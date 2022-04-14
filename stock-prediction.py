@@ -59,22 +59,25 @@ def prediction_with_interpolation(data:np.array, length:int, future:int):
 
 def prediction_with_basic_lstm(x_train:np.array, y_train:np.array, x_test:np.array, y_test:np.array, scaler:MinMaxScaler):
     model = BasicModel(TRAIN_SEQUENCE_LENGTH)
-    model.train(x_train, y_train, epochs=1)
+    model.train(x_train, y_train, epochs=500)
     model.evaluate(x_test, y_test)
     predicted = model.predict(x_test)
-    future = model.free_running_prediction(x_test[0], x_test.shape[0])
 
     vs.show_regression_plot(y_test, predicted)
+
     y_test = np.reshape(y_test, (-1, 1))
     y_test = scaler.inverse_transform(y_test)
     predicted = scaler.inverse_transform(predicted)
-    future = scaler.inverse_transform(future)
-    loss, val_loss = model.get_losses()
+    last = [item[-1] for item in x_test]
+    last = np.reshape(last, (-1, 1))
+    last = scaler.inverse_transform(last)
     vs.show_np_arrays(
-        [y_test, predicted, future], 
-        ["Actual price", "Predicted price", "Free running price"], 
+        [y_test, predicted, last], 
+        ["Actual price", "Predicted price", "Naiv prediction"], 
         "Nvidia price prediction"
     )
+
+    loss, val_loss = model.get_losses()
     vs.show_np_arrays(
         [loss, val_loss], 
         ["Training", "Validation"], 
@@ -126,3 +129,4 @@ x_test, y_test = create_x_y_matrices(test_set)
 x_train = np.reshape(x_train, (-1, TRAIN_SEQUENCE_LENGTH, 1))
 x_test = np.reshape(x_test, (-1, TRAIN_SEQUENCE_LENGTH, 1))
 
+prediction_with_basic_lstm(x_train, y_train, x_test, y_test, scaler)

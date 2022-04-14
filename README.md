@@ -56,11 +56,11 @@ Performance on the test dataset:
 
 ![Basic model performance](images/Basic-model-prediction.png)
 
-As it can be seen on the performance chart, that this model cannot be used in free running mode, meaning that the prediction only makes sense for the next day. The model is likely be using the naiv approach which is the reason why the free running mode doesn't make sense. The correction of the model is in progress.
+As it can be seen on the performance chart, the output isn't that far of from the real figures. It actually manages to avoid naiv predictions which is just simply repeating the last element of the input sequence.
 
 ![Basic model regression](images/Basic-model-regression-plot.png)
 
-Based on the regression plot, the model gives believable results, even though it is using naiv predictions.
+Based on the regression and performance chart, the model is giving reasonable but not accurate predictions.
 
 ### ESN model
 
@@ -77,7 +77,6 @@ The model clearly gives more accurate predictions for the shorter term. For more
 ## Plans for the future
 
 - Add new LSTM model with Nvidia and QQQ as inputs, and Nvidia prediction as output
-- Optimize the basic LSTM model to avoid naiv prediction
 - Compare the results of each model and determine the best
 - Use it in real trading (maybe not the best idea)
 

@@ -6,18 +6,18 @@ from keras.callbacks import EarlyStopping
 class BasicModel():
     def __init__(self, sequence_length) -> None:
         self.model = Sequential()
-        self.model.add(LSTM(64, return_sequences=True, input_shape = (sequence_length, 1)))
-        self.model.add(Dropout(0.2))
-        self.model.add(LSTM(64, return_sequences=True))
-        self.model.add(Dropout(0.2))
+        self.model.add(LSTM(256, return_sequences=True, input_shape = (sequence_length, 1)))
+        self.model.add(Dropout(0.3))
+        self.model.add(LSTM(128, return_sequences=True))
+        self.model.add(Dropout(0.3))
         self.model.add(LSTM(64))
-        self.model.add(Dropout(0.2))
+        self.model.add(Dropout(0.3))
         self.model.add(Dense(1))
-        self.model.compile(optimizer='adam', loss='mean_squared_error')
+        self.model.compile(optimizer='RMSprop', loss='mae')
         self.model.summary()
 
     def train(self, x_train: np.array, y_train: np.array, epochs: int = 300, batch: int = 32):
-        es = EarlyStopping(monitor='val_loss', patience=20, restore_best_weights=True)
+        es = EarlyStopping(monitor='loss', patience=20, restore_best_weights=True)
         self.history = self.model.fit(x_train, y_train, validation_split=0.1, epochs=epochs, batch_size=batch, callbacks=[es])
 
     def predict(self, dataset: np.array) -> np.array:
