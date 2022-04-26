@@ -42,7 +42,7 @@ Given the fact that predicting stock prices for the next n days ahead is the sam
 
 Simple LSTM-based model to predict the prices of Nvidia stocks.
 
-The input data is divided to training and testing sets with a 9:1 ratio, meaning that the first 1620 data points became the training while the remaining 180 points the test set. In order to make the job of the model a bit easier, MinMaxScaling was used to move the values between 0 and 1.
+The input data is divided to training and testing sets with a 9:1 ratio, meaning that the first 1620 data points became the training while the remaining 180 points the test set. In order to make the job of the model a bit easier, MinMaxScaling was used to move the training values between 0 and 1.
 
 For both the training and testing, short sequences of data were created with a length of 20 by using the sliding window approach. Essentially this means, that the stock price on the next day will be determined based on the previous 20 days of data.
 
@@ -61,6 +61,8 @@ As it can be seen on the performance chart, the output isn't that far of from th
 ![Basic model regression](images/Basic-model-regression-plot.png)
 
 Based on the regression and performance chart, the model is giving reasonable but not accurate predictions.
+
+Mean Absolute Error on test set: 0.09
 
 ### ESN model
 

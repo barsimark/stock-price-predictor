@@ -86,6 +86,8 @@ def prediction_with_basic_lstm(x_train:np.array, y_train:np.array, x_test:np.arr
         "Loss"
     )
 
+    np.save('saves/basic_predicted.npy', predicted)
+
 def prediction_with_esn(x_train:np.array, y_train:np.array, x_test:np.array, y_test:np.array, scaled:np.array, scaler:MinMaxScaler):
     model = ESNModel(500)
     ESN_FUTURE = 2
@@ -127,7 +129,11 @@ test_set = np.array(scaler.transform(test_set))
 
 x_train, y_train = create_x_y_matrices(train_set)
 x_test, y_test = create_x_y_matrices(test_set)
+print(x_train.shape)
+print(y_train.shape)
+print(x_test.shape)
+print(y_test.shape)
 x_train = np.reshape(x_train, (-1, TRAIN_SEQUENCE_LENGTH, 1))
 x_test = np.reshape(x_test, (-1, TRAIN_SEQUENCE_LENGTH, 1))
 
-prediction_with_basic_lstm(x_train, y_train, x_test, y_test, scaler)
+#prediction_with_basic_lstm(x_train, y_train, x_test, y_test, scaler)
