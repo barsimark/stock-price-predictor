@@ -17,7 +17,7 @@ class BasicModel():
         self.model.summary()
 
     def train(self, x_train: np.array, y_train: np.array, epochs: int = 300, batch: int = 32):
-        es = EarlyStopping(monitor='loss', patience=20, restore_best_weights=True)
+        es = EarlyStopping(monitor='val_loss', patience=20, restore_best_weights=True)
         self.history = self.model.fit(x_train, y_train, validation_split=0.1, epochs=epochs, batch_size=batch, callbacks=[es])
 
     def predict(self, dataset: np.array) -> np.array:

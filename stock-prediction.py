@@ -120,9 +120,10 @@ def prediction_with_esn(x_train:np.array, y_train:np.array, x_test:np.array, y_t
 
 input = load_dataset("input/Nvidia")
 input_prices = get_prices_from_dataframe(input)
+train_set, test_set = separate_data(input_prices, int(input_prices.shape[0] * (1 - TEST_SET_RATIO)))
 scaler = MinMaxScaler(feature_range=(0, 1))
-scaled_prices = np.array(scaler.fit_transform(input_prices))
-train_set, test_set = separate_data(scaled_prices, int(scaled_prices.shape[0] * (1 - TEST_SET_RATIO)))
+train_set = np.array(scaler.fit_transform(train_set))
+test_set = np.array(scaler.transform(test_set))
 
 x_train, y_train = create_x_y_matrices(train_set)
 x_test, y_test = create_x_y_matrices(test_set)
