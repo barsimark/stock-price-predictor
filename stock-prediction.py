@@ -69,7 +69,7 @@ def prediction_with_interpolation(data:np.array, length:int, future:int):
 
 def prediction_with_basic_lstm(x_train:np.array, y_train:np.array, x_test:np.array, y_test:np.array, scaler:MinMaxScaler):
     model = BasicModel(TRAIN_SEQUENCE_LENGTH)
-    model.train(x_train, y_train, epochs=500)
+    model.train(x_train, y_train, epochs=1)
     model.evaluate(x_test, y_test)
     predicted = model.predict(x_test)
 
@@ -95,8 +95,6 @@ def prediction_with_basic_lstm(x_train:np.array, y_train:np.array, x_test:np.arr
         "Epoch", 
         "Loss"
     )
-
-    np.save('saves/basic_predicted.npy', predicted)
 
 def prediction_with_esn(x_train:np.array, y_train:np.array, x_test:np.array, y_test:np.array, scaled:np.array, scaler:MinMaxScaler):
     model = ESNModel(500)
@@ -171,5 +169,5 @@ def get_complex_data():
 
     return x_train, y_train, x_test, y_test, scaler
 
-x_train, y_train, x_test, y_test, scaler = get_complex_data()
-#prediction_with_basic_lstm(x_train, y_train, x_test, y_test, scaler)
+x_train, y_train, x_test, y_test, scaler = get_simple_data()
+prediction_with_basic_lstm(x_train, y_train, x_test, y_test, scaler)
