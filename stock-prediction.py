@@ -4,7 +4,7 @@ import os
 from sklearn.preprocessing import MinMaxScaler
 
 import visualization as vs
-from models.lstm import BasicModel
+from models.lstm import BasicModel, ComplexModel
 from models.esn import ESNModel
 import models.classic as cls
 
@@ -36,6 +36,16 @@ def create_x_y_matrices(train_set: np.array):
         x_train.append(train_set[i-TRAIN_SEQUENCE_LENGTH:i, 0])
         y_train.append(train_set[i, 0])
     return np.array(x_train), np.array(y_train)
+
+def create_x_y_matrices_complex(basic_set: np.array, baseline_set: np.array):
+    x = np.zeros((len(basic_set) - TRAIN_SEQUENCE_LENGTH, TRAIN_SEQUENCE_LENGTH, 2))
+    y = np.zeros((len(basic_set) - TRAIN_SEQUENCE_LENGTH, 1))
+    for i in range(TRAIN_SEQUENCE_LENGTH, basic_set.shape[0]):
+        for j in range(TRAIN_SEQUENCE_LENGTH):
+            x[i-TRAIN_SEQUENCE_LENGTH][j][0] = basic_set[i-TRAIN_SEQUENCE_LENGTH+j, 0]
+            x[i-TRAIN_SEQUENCE_LENGTH][j][1] = baseline_set[i-TRAIN_SEQUENCE_LENGTH+j, 0]
+        y[i-TRAIN_SEQUENCE_LENGTH][0] = basic_set[i]
+    return x, y
 
 def prediction_with_moving_average(data:np.array, length:int):
     average_5 = cls.get_moving_average(data, 5)
@@ -86,6 +96,35 @@ def prediction_with_basic_lstm(x_train:np.array, y_train:np.array, x_test:np.arr
         "Loss"
     )
 
+def prediction_with_complex_lstm(x_train:np.array, y_train:np.array, x_test:np.array, y_test:np.array, scaler:MinMaxScaler):
+    model = ComplexModel(TRAIN_SEQUENCE_LENGTH)
+    model.train(x_train, y_train, epochs=500)
+    model.evaluate(x_test, y_test)
+    predicted = model.predict(x_test)
+
+    vs.show_regression_plot(y_test, predicted)
+
+    y_test = np.reshape(y_test, (-1, 1))
+    y_test = scaler.inverse_transform(y_test)
+    predicted = scaler.inverse_transform(predicted)
+    last = [item[-1][0] for item in x_test]
+    last = np.reshape(last, (-1, 1))
+    last = scaler.inverse_transform(last)
+    vs.show_np_arrays(
+        [y_test, predicted, last], 
+        ["Actual price", "Predicted price", "Naiv prediction"], 
+        "Nvidia price prediction"
+    )
+
+    loss, val_loss = model.get_losses()
+    vs.show_np_arrays(
+        [loss, val_loss], 
+        ["Training", "Validation"], 
+        "Model's loss", 
+        "Epoch", 
+        "Loss"
+    )
+
 def prediction_with_esn(x_train:np.array, y_train:np.array, x_test:np.array, y_test:np.array, scaled:np.array, scaler:MinMaxScaler):
     model = ESNModel(500)
     ESN_FUTURE = 2
@@ -118,15 +157,41 @@ def prediction_with_esn(x_train:np.array, y_train:np.array, x_test:np.array, y_t
         "Nvidia price prediction"
     )
 
-input = load_dataset("input/Nvidia")
-input_prices = get_prices_from_dataframe(input)
-scaler = MinMaxScaler(feature_range=(0, 1))
-scaled_prices = np.array(scaler.fit_transform(input_prices))
-train_set, test_set = separate_data(scaled_prices, int(scaled_prices.shape[0] * (1 - TEST_SET_RATIO)))
+def get_simple_data():
+    input = load_dataset("input/Nvidia")
+    input_prices = get_prices_from_dataframe(input)
+    train_set, test_set = separate_data(input_prices, int(input_prices.shape[0] * (1 - TEST_SET_RATIO)))
+    scaler = MinMaxScaler(feature_range=(0, 1))
+    train_set = np.array(scaler.fit_transform(train_set))
+    test_set = np.array(scaler.transform(test_set))
 
-x_train, y_train = create_x_y_matrices(train_set)
-x_test, y_test = create_x_y_matrices(test_set)
-x_train = np.reshape(x_train, (-1, TRAIN_SEQUENCE_LENGTH, 1))
-x_test = np.reshape(x_test, (-1, TRAIN_SEQUENCE_LENGTH, 1))
+    x_train, y_train = create_x_y_matrices(train_set)
+    x_test, y_test = create_x_y_matrices(test_set)
+    x_train = np.reshape(x_train, (-1, TRAIN_SEQUENCE_LENGTH, 1))
+    x_test = np.reshape(x_test, (-1, TRAIN_SEQUENCE_LENGTH, 1))
 
-prediction_with_basic_lstm(x_train, y_train, x_test, y_test, scaler)
+    return x_train, y_train, x_test, y_test, scaler
+
+def get_complex_data():
+    input = load_dataset("input/Nvidia")
+    input_prices = get_prices_from_dataframe(input)
+    train_set, test_set = separate_data(input_prices, int(input_prices.shape[0] * (1 - TEST_SET_RATIO)))
+
+    input_prices_qqq = get_prices_from_dataframe(load_dataset('input/QQQ'))
+    train_qqq, test_qqq = separate_data(input_prices_qqq, int(input_prices_qqq.shape[0] * (1 - TEST_SET_RATIO)))
+
+    scaler = MinMaxScaler(feature_range=(0, 1))
+    train_set = np.array(scaler.fit_transform(train_set))
+    test_set = np.array(scaler.transform(test_set))
+
+    qqq_scaler = MinMaxScaler(feature_range=(0, 1))
+    train_qqq = np.array(qqq_scaler.fit_transform(train_qqq))
+    test_qqq = np.array(qqq_scaler.fit_transform(test_qqq))
+    
+    x_train, y_train = create_x_y_matrices_complex(train_set, train_qqq)
+    x_test, y_test = create_x_y_matrices_complex(test_set, test_qqq)
+
+    return x_train, y_train, x_test, y_test, scaler
+
+x_train, y_train, x_test, y_test, scaler = get_complex_data()
+prediction_with_complex_lstm(x_train, y_train, x_test, y_test, scaler)

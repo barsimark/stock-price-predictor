@@ -3,21 +3,12 @@ from keras.models import Sequential
 from keras.layers import LSTM, Dense, Dropout
 from keras.callbacks import EarlyStopping
 
-class BasicModel():
-    def __init__(self, sequence_length) -> None:
+class BaseLSTM():
+    def __init__(self) -> None:
         self.model = Sequential()
-        self.model.add(LSTM(256, return_sequences=True, input_shape = (sequence_length, 1)))
-        self.model.add(Dropout(0.3))
-        self.model.add(LSTM(128, return_sequences=True))
-        self.model.add(Dropout(0.3))
-        self.model.add(LSTM(64))
-        self.model.add(Dropout(0.3))
-        self.model.add(Dense(1))
-        self.model.compile(optimizer='RMSprop', loss='mae')
-        self.model.summary()
 
     def train(self, x_train: np.array, y_train: np.array, epochs: int = 300, batch: int = 32):
-        es = EarlyStopping(monitor='loss', patience=20, restore_best_weights=True)
+        es = EarlyStopping(monitor='val_loss', patience=20, restore_best_weights=True)
         self.history = self.model.fit(x_train, y_train, validation_split=0.1, epochs=epochs, batch_size=batch, callbacks=[es])
 
     def predict(self, dataset: np.array) -> np.array:
@@ -30,12 +21,28 @@ class BasicModel():
     def get_losses(self):
         return np.array(self.history.history['loss']), np.array(self.history.history['val_loss'])
 
-    def free_running_prediction(self, dataset: np.array, length: int) -> np.array:
-        future = []
-        data = np.copy(dataset)
-        for _ in range(length):
-            result = self.predict(np.reshape(data, (1, -1, 1)))
-            data = np.delete(data, (0), axis=0)
-            data = np.append(data, result, axis=0)
-            future.append(result)
-        return np.reshape(np.array(future), (-1, 1))
+class BasicModel(BaseLSTM):
+    def __init__(self, sequence_length) -> None:
+        super().__init__()
+        self.model.add(LSTM(256, return_sequences=True, input_shape = (sequence_length, 1)))
+        self.model.add(Dropout(0.3))
+        self.model.add(LSTM(128, return_sequences=True))
+        self.model.add(Dropout(0.3))
+        self.model.add(LSTM(64))
+        self.model.add(Dropout(0.3))
+        self.model.add(Dense(1))
+        self.model.compile(optimizer='RMSprop', loss='mae')
+        self.model.summary()
+
+class ComplexModel(BaseLSTM):
+    def __init__(self, sequence_length) -> None:
+        super().__init__()
+        self.model.add(LSTM(512, return_sequences=True, input_shape = (sequence_length, 2)))
+        self.model.add(Dropout(0.3))
+        self.model.add(LSTM(256, return_sequences=True))
+        self.model.add(Dropout(0.3))
+        self.model.add(LSTM(128))
+        self.model.add(Dropout(0.3))
+        self.model.add(Dense(1))
+        self.model.compile(optimizer='RMSprop', loss='mae')
+        self.model.summary()
