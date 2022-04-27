@@ -33,3 +33,16 @@ class BasicModel(BaseLSTM):
         self.model.add(Dense(1))
         self.model.compile(optimizer='RMSprop', loss='mae')
         self.model.summary()
+
+class ComplexModel(BaseLSTM):
+    def __init__(self, sequence_length) -> None:
+        super().__init__()
+        self.model.add(LSTM(128, return_sequences=True, input_shape = (sequence_length, 2)))
+        self.model.add(Dropout(0.3))
+        self.model.add(LSTM(128, return_sequences=True))
+        self.model.add(Dropout(0.3))
+        self.model.add(LSTM(128))
+        self.model.add(Dropout(0.3))
+        self.model.add(Dense(1))
+        self.model.compile(optimizer='RMSprop', loss='mae')
+        self.model.summary()

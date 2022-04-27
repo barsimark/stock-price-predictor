@@ -4,7 +4,7 @@ import os
 from sklearn.preprocessing import MinMaxScaler
 
 import visualization as vs
-from models.lstm import BasicModel
+from models.lstm import BasicModel, ComplexModel
 from models.esn import ESNModel
 import models.classic as cls
 
@@ -69,7 +69,7 @@ def prediction_with_interpolation(data:np.array, length:int, future:int):
 
 def prediction_with_basic_lstm(x_train:np.array, y_train:np.array, x_test:np.array, y_test:np.array, scaler:MinMaxScaler):
     model = BasicModel(TRAIN_SEQUENCE_LENGTH)
-    model.train(x_train, y_train, epochs=1)
+    model.train(x_train, y_train, epochs=500)
     model.evaluate(x_test, y_test)
     predicted = model.predict(x_test)
 
@@ -95,6 +95,37 @@ def prediction_with_basic_lstm(x_train:np.array, y_train:np.array, x_test:np.arr
         "Epoch", 
         "Loss"
     )
+
+def prediction_with_complex_lstm(x_train:np.array, y_train:np.array, x_test:np.array, y_test:np.array, scaler:MinMaxScaler):
+    model = ComplexModel(TRAIN_SEQUENCE_LENGTH)
+    model.train(x_train, y_train, epochs=500)
+    model.evaluate(x_test, y_test)
+    predicted = model.predict(x_test)
+
+    vs.show_regression_plot(y_test, predicted)
+
+    y_test = np.reshape(y_test, (-1, 1))
+    y_test = scaler.inverse_transform(y_test)
+    predicted = scaler.inverse_transform(predicted)
+    last = [item[-1][0] for item in x_test]
+    last = np.reshape(last, (-1, 1))
+    last = scaler.inverse_transform(last)
+    vs.show_np_arrays(
+        [y_test, predicted, last], 
+        ["Actual price", "Predicted price", "Naiv prediction"], 
+        "Nvidia price prediction"
+    )
+
+    loss, val_loss = model.get_losses()
+    vs.show_np_arrays(
+        [loss, val_loss], 
+        ["Training", "Validation"], 
+        "Model's loss", 
+        "Epoch", 
+        "Loss"
+    )
+
+    np.save('saves/complex_prediction.npy', predicted)
 
 def prediction_with_esn(x_train:np.array, y_train:np.array, x_test:np.array, y_test:np.array, scaled:np.array, scaler:MinMaxScaler):
     model = ESNModel(500)
@@ -162,12 +193,7 @@ def get_complex_data():
     x_train, y_train = create_x_y_matrices_complex(train_set, train_qqq)
     x_test, y_test = create_x_y_matrices_complex(test_set, test_qqq)
 
-    print(x_train.shape)
-    print(y_train.shape)
-    print(x_test.shape)
-    print(y_test.shape)
-
     return x_train, y_train, x_test, y_test, scaler
 
-x_train, y_train, x_test, y_test, scaler = get_simple_data()
-prediction_with_basic_lstm(x_train, y_train, x_test, y_test, scaler)
+x_train, y_train, x_test, y_test, scaler = get_complex_data()
+prediction_with_complex_lstm(x_train, y_train, x_test, y_test, scaler)
