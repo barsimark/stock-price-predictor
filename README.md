@@ -84,7 +84,7 @@ It can be seen that this model gives similar results to the Simple LSTM model. E
 
 ![Complex model regression](images/Complex-model-regression.png)
 
-Mean Absolute Error on test set: 0.13
+Mean Absolute Error on test set: 0.07
 
 ### ESN model
 

@@ -125,8 +125,6 @@ def prediction_with_complex_lstm(x_train:np.array, y_train:np.array, x_test:np.a
         "Loss"
     )
 
-    np.save('saves/complex_prediction.npy', predicted)
-
 def prediction_with_esn(x_train:np.array, y_train:np.array, x_test:np.array, y_test:np.array, scaled:np.array, scaler:MinMaxScaler):
     model = ESNModel(500)
     ESN_FUTURE = 2
