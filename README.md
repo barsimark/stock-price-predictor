@@ -49,7 +49,7 @@ For both the training and testing, short sequences of data were created with a l
 The structure of the model:
 
 - Input: sequnce of stock price data
-- Hidden layers: multiple LSTM, and Dropout layers
+- Hidden layers: multiple LSTM and Dropout layers
 - Output: predicted stock price for the next day
 
 Performance on the test dataset:
@@ -63,6 +63,28 @@ As it can be seen on the performance chart, the output isn't that far of from th
 Based on the regression and performance chart, the model is giving reasonable but not accurate predictions.
 
 Mean Absolute Error on test set: 0.09
+
+### Complex LSTM model
+
+Complex LSTM model to predict Nvidia prices based on previous Nvidia and QQQ price sequences.
+
+The input data is very similar to the one used in the previous model. Training and testing ratio is 9:1, MinMaxScaling was used to transfer them between 0 and 1, and the sequence length was 20. The main difference is that each and every data sequence is 2D where the first dimension is the Nvidia and the second is the QQQ prices.
+
+The structure of the model:
+
+- Input: 2D stock price sequence
+- Hidden layers: multiple LSTM and Dropout layers
+- Output: predicted stock preice for the very next day
+
+Performance on the test dataset:
+
+![Complex model performance](images/Complex-model-prediction.png)
+
+It can be seen that this model gives similar results to the Simple LSTM model. Even though the model manages to avoid naiv prediction, it is still not accurate. 
+
+![Complex model regression](images/Complex-model-regression.png)
+
+Mean Absolute Error on test set: 0.13
 
 ### ESN model
 
@@ -78,7 +100,6 @@ The model clearly gives more accurate predictions for the shorter term. For more
 
 ## Plans for the future
 
-- Add new LSTM model with Nvidia and QQQ as inputs, and Nvidia prediction as output
 - Compare the results of each model and determine the best
 - Use it in real trading (maybe not the best idea)
 
