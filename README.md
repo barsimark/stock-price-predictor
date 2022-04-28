@@ -98,6 +98,19 @@ Performance on the test dataset:
 
 The model clearly gives more accurate predictions for the shorter term. For more than 5 days ahead, it starts to become unreliable, and oscillation quickly goes out of control if the forecase length is greater than 10.
 
+## Model comparison
+
+### Connection between Nvidia and QQQ prices
+
+|    Metrics    | Nvidia prices | QQQ prices    |
+| ------------- |:-------------:|:-------------:|
+| Minimum       | 4.81          | 94.23         |
+| Maximum       | 335.17        | 405.57        |
+| Mean          | 68.8194       | 192.4404      |
+| Std deviation | 70.3984       | 86.0612       |
+
+The correlation between Nvidia and QQQ is 0.9575 which is not surprising considering the fact that QQQ is a technology index which contains Nvidia among its 100 companies.
+
 ## Plans for the future
 
 - Compare the results of each model and determine the best
