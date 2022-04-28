@@ -115,6 +115,10 @@ The correlation between Nvidia and QQQ is 0.9575 which is not surprising conside
 
 ![Comparison](images/Basic-complex-comparison.png)
 
+Based on this comparison chart, it can be said, that the complex model is almost always more accurate than the simple one. In fact, it is true in general that the more factors you use to determine the price of a stock the better the results are going to be. It was excepted purely based on the Mean Absolute Error metric which in the case of the complex model was 0.07 as opposed to the 0.09 of the base model.
+
+Both results are more or less the same up until the 80th day. I would attribute it to the rapidly increasing volutility of the asset starting somewhere around Day 70. In the first half of the prediction cycle, linear extrapolation is fairly close to the actual prices however, it is way off from Day 80. This observation was further exaggerated by quadratic extrapolation.
+
 ## Plans for the future
 
 - Compare the results of each model and determine the best

@@ -200,5 +200,6 @@ actual = scaler.inverse_transform(np.reshape(y_test, (-1, 1)))
 vs.show_np_arrays(
     [actual, basic_preds, complex_preds],
     ['Actual price', 'Basic result', 'Complex result'],
-    'Basic and Complex LSTM model comparison'
+    'Basic and Complex LSTM model comparison',
+    vlines=[80]
 )

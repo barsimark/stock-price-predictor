@@ -21,7 +21,7 @@ def show_dataframe_chart(df: pd.DataFrame, title: str = ""):
     plt.show()
 
 ## Show chart of numpy arrays
-def show_np_arrays(data, labels, title:str, xlabel: str = "Days", ylabel: str = "Open price"):
+def show_np_arrays(data, labels, title:str, xlabel: str = "Days", ylabel: str = "Open price", vlines = None):
     plt.figure(figsize = (9,5))
     plt.xlabel(xlabel, fontsize=18)
     plt.ylabel(ylabel, fontsize=18)
@@ -29,6 +29,9 @@ def show_np_arrays(data, labels, title:str, xlabel: str = "Days", ylabel: str = 
     for i in range(len(data)):
         plt.plot(data[i], label=labels[i])
     plt.legend(loc = "upper left")
+    if vlines != None:
+        for vl in vlines:
+            plt.vlines(vl, 170, 330, colors='black')
     plt.show()
 
 ## Show regression chart
