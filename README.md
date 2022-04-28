@@ -111,6 +111,10 @@ The model clearly gives more accurate predictions for the shorter term. For more
 
 The correlation between Nvidia and QQQ is 0.9575 which is not surprising considering the fact that QQQ is a technology index which contains Nvidia among its 100 companies.
 
+### Basic and Complex LSTM models
+
+![Comparison](images/Basic-complex-comparison.png)
+
 ## Plans for the future
 
 - Compare the results of each model and determine the best

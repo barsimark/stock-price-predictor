@@ -193,5 +193,12 @@ def get_complex_data():
 
     return x_train, y_train, x_test, y_test, scaler
 
-x_train, y_train, x_test, y_test, scaler = get_complex_data()
-prediction_with_complex_lstm(x_train, y_train, x_test, y_test, scaler)
+x_train, y_train, x_test, y_test, scaler = get_simple_data()
+basic_preds = np.load('saves/basic_prediction.npy')
+complex_preds = np.load('saves/complex_prediction.npy')
+actual = scaler.inverse_transform(np.reshape(y_test, (-1, 1)))
+vs.show_np_arrays(
+    [actual, basic_preds, complex_preds],
+    ['Actual price', 'Basic result', 'Complex result'],
+    'Basic and Complex LSTM model comparison'
+)
