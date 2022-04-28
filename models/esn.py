@@ -18,6 +18,12 @@ class ESNModel():
         for i in range(future):
             mse += (truth[i] - preds[i]) ** 2
         return mse / future
+
+    def MAE(self, truth:np.array, preds:np.array, future:int)-> float:
+        mae = 0
+        for i in range(future):
+            mae += np.abs(truth[i] - preds[i])
+        return mae / future
         
     def train_and_predict(self, train_len:int, future:int, future_total:int, data:np.array, truth:np.array=None, offset:int=0) -> np.array:
         predictions = np.zeros(future_total)
@@ -27,4 +33,5 @@ class ESNModel():
             predictions[i:i+future] = pred[:,0]
             print('Iteration: ' + str(int(i/future + 1)) + '/' + str(int(future_total/future)))
         print('MSE: ' + str(self.MSE(truth, predictions, future_total)))
+        print('MAE: ' + str(self.MAE(truth, predictions, future_total)))
         return np.array(predictions)

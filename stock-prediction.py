@@ -156,6 +156,8 @@ def prediction_with_esn(x_train:np.array, y_train:np.array, x_test:np.array, y_t
         ["Actual price", "Prediction for the next 2 days", "Prediction for the next 5 days"], 
         "Nvidia price prediction"
     )
+    np.save('saves/esn_short.npy', preds_short)
+    np.save('saves/esn_long.npy', preds_long)
 
 def get_simple_data():
     input = load_dataset("input/Nvidia")
@@ -194,12 +196,12 @@ def get_complex_data():
     return x_train, y_train, x_test, y_test, scaler
 
 x_train, y_train, x_test, y_test, scaler = get_simple_data()
-basic_preds = np.load('saves/basic_prediction.npy')
 complex_preds = np.load('saves/complex_prediction.npy')
+esn_short = np.load('saves/esn_short.npy')
 actual = scaler.inverse_transform(np.reshape(y_test, (-1, 1)))
 vs.show_np_arrays(
-    [actual, basic_preds, complex_preds],
-    ['Actual price', 'Basic result', 'Complex result'],
-    'Basic and Complex LSTM model comparison',
+    [actual, esn_short, complex_preds],
+    ['Actual price', 'ESN result', 'LSTM result'],
+    'LSTM and ESN model comparison',
     vlines=[80]
 )

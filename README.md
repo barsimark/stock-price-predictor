@@ -98,6 +98,10 @@ Performance on the test dataset:
 
 The model clearly gives more accurate predictions for the shorter term. For more than 5 days ahead, it starts to become unreliable, and oscillation quickly goes out of control if the forecase length is greater than 10.
 
+Mean Absolute Error for 2 days: 0.09
+
+Mean Absolute Error for 5 days: 0.13
+
 ## Model comparison
 
 ### Connection between Nvidia and QQQ prices
@@ -109,20 +113,25 @@ The model clearly gives more accurate predictions for the shorter term. For more
 | Mean          | 68.8194       | 192.4404      |
 | Std deviation | 70.3984       | 86.0612       |
 
-The correlation between Nvidia and QQQ is 0.9575 which is not surprising considering the fact that QQQ is a technology index which contains Nvidia among its 100 companies.
+The correlation between Nvidia and QQQ is 0.9575 which is not surprising considering the fact that QQQ is a technology index which contains Nvidia among its 100 companies. This correlation may have an impact on the result of the complex model.
 
 ### Basic and Complex LSTM models
 
 ![Comparison](images/Basic-complex-comparison.png)
 
-Based on this comparison chart, it can be said, that the complex model is almost always more accurate than the simple one. In fact, it is true in general that the more factors you use to determine the price of a stock the better the results are going to be. It was excepted purely based on the Mean Absolute Error metric which in the case of the complex model was 0.07 as opposed to the 0.09 of the base model.
+Based on this comparison chart, it can be said, that the complex model is almost always more accurate than the simple one. In fact, it is true in general that the more factors you use to determine the price of a stock, the better the results are going to be. It was excepted purely based on the Mean Absolute Error metric which in the case of the complex model was 0.07 as opposed to the 0.09 of the base model.
 
-Both results are more or less the same up until the 80th day. I would attribute it to the rapidly increasing volutility of the asset starting somewhere around Day 70. In the first half of the prediction cycle, linear extrapolation is fairly close to the actual prices however, it is way off from Day 80. This observation was further exaggerated by quadratic extrapolation.
+Both results are more or less the same up until Day 80. I would attribute it to the rapidly increasing volutility of the asset starting somewhere around Day 70. In the first half of the prediction cycle, linear extrapolation is fairly close to the actual prices however, it is way off from Day 80. This observation was further exaggerated by quadratic extrapolation.
 
-## Plans for the future
+### LSTM and ESN models
 
-- Compare the results of each model and determine the best
-- Use it in real trading (maybe not the best idea)
+![Comparison](images/Lstm-esn-comparison.png)
+
+The same separation line at Day 80 can be seen in this chart as well. This gives us further proof that this is happening due to volutility, simply because of the nature of ESN models.
+
+## Ways to improve the models
+
+TBD
 
 ## Author
 
