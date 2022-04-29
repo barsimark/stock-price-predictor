@@ -123,11 +123,25 @@ Based on this comparison chart, it can be said, that the complex model is almost
 
 Both results are more or less the same up until Day 80. I would attribute it to the rapidly increasing volutility of the asset starting somewhere around Day 70. In the first half of the prediction cycle, linear extrapolation is fairly close to the actual prices however, it is way off from Day 80. This observation was further exaggerated by quadratic extrapolation.
 
+| Model   | First half | Second half |
+| ------- |:----------:|:-----------:|
+| Basic   | 0.04       | 0.15        |
+| Complex | 0.03       | 0.11        |
+
+This comparison of MAE on the first and second parts also proves this.
+
 ### LSTM and ESN models
 
 ![Comparison](images/Lstm-esn-comparison.png)
 
 The same separation line at Day 80 can be seen in this chart as well. This gives us further proof that this is happening due to volutility, simply because of the nature of ESN models.
+
+| Model   | First half | Second half |
+| ------- |:----------:|:-----------:|
+| LSTM    | 0.03       | 0.11        |
+| ESN     | 0.05       | 0.14        |
+
+The comparison of MAE also indicates this difference in accuracy.
 
 ## Ways to improve the models
 

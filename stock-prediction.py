@@ -1,3 +1,4 @@
+from asynchat import simple_producer
 import pandas as pd
 import numpy as np
 import os
@@ -195,13 +196,18 @@ def get_complex_data():
 
     return x_train, y_train, x_test, y_test, scaler
 
+def MAE(predicted:np.array, actual:np.array) -> float:
+    if predicted.shape[0] != actual.shape[0]:
+        return 0
+    mae = 0
+    for i in range(predicted.shape[0]):
+        mae += abs(predicted[i] - actual[i])
+    return mae / predicted.shape[0]
+
 x_train, y_train, x_test, y_test, scaler = get_simple_data()
-complex_preds = np.load('saves/complex_prediction.npy')
-esn_short = np.load('saves/esn_short.npy')
-actual = scaler.inverse_transform(np.reshape(y_test, (-1, 1)))
-vs.show_np_arrays(
-    [actual, esn_short, complex_preds],
-    ['Actual price', 'ESN result', 'LSTM result'],
-    'LSTM and ESN model comparison',
-    vlines=[80]
-)
+simple_preds = np.load('saves/esn_short.npy')
+simple_preds = scaler.transform(simple_preds)
+simple_preds = np.reshape(simple_preds, (-1))
+
+print(MAE(simple_preds[:80], y_test[:80]))
+print(MAE(simple_preds[80:], y_test[80:]))
