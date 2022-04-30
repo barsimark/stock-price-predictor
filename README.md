@@ -143,9 +143,14 @@ The same separation line at Day 80 can be seen in this chart as well. This gives
 
 The comparison of MAE also indicates this difference in accuracy.
 
+The two areas where the ESN model clearly outshines both of my LSTM models are training time, and having the ability to give somewhat accurate predictions for multiple days ahead in the future.
+
 ## Ways to improve the models
 
-TBD
+Even though I have spent a considerable amount of time on the models, they are by no means perfect. Here are a few ways which might help with accuracy:
+
+- Longer training sequence
+- Using other metrics such as moving average, volutility, and other stocks or indexes in tandem with previous prices
 
 ## Author
 
