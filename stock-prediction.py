@@ -1,3 +1,4 @@
+from asynchat import simple_producer
 import pandas as pd
 import numpy as np
 import os
@@ -156,6 +157,8 @@ def prediction_with_esn(x_train:np.array, y_train:np.array, x_test:np.array, y_t
         ["Actual price", "Prediction for the next 2 days", "Prediction for the next 5 days"], 
         "Nvidia price prediction"
     )
+    np.save('saves/esn_short.npy', preds_short)
+    np.save('saves/esn_long.npy', preds_long)
 
 def get_simple_data():
     input = load_dataset("input/Nvidia")
@@ -193,5 +196,18 @@ def get_complex_data():
 
     return x_train, y_train, x_test, y_test, scaler
 
-x_train, y_train, x_test, y_test, scaler = get_complex_data()
-prediction_with_complex_lstm(x_train, y_train, x_test, y_test, scaler)
+def MAE(predicted:np.array, actual:np.array) -> float:
+    if predicted.shape[0] != actual.shape[0]:
+        return 0
+    mae = 0
+    for i in range(predicted.shape[0]):
+        mae += abs(predicted[i] - actual[i])
+    return mae / predicted.shape[0]
+
+x_train, y_train, x_test, y_test, scaler = get_simple_data()
+simple_preds = np.load('saves/esn_short.npy')
+simple_preds = scaler.transform(simple_preds)
+simple_preds = np.reshape(simple_preds, (-1))
+
+print(MAE(simple_preds[:80], y_test[:80]))
+print(MAE(simple_preds[80:], y_test[80:]))

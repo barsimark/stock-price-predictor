@@ -98,10 +98,59 @@ Performance on the test dataset:
 
 The model clearly gives more accurate predictions for the shorter term. For more than 5 days ahead, it starts to become unreliable, and oscillation quickly goes out of control if the forecase length is greater than 10.
 
-## Plans for the future
+Mean Absolute Error for 2 days: 0.09
 
-- Compare the results of each model and determine the best
-- Use it in real trading (maybe not the best idea)
+Mean Absolute Error for 5 days: 0.13
+
+## Model comparison
+
+### Connection between Nvidia and QQQ prices
+
+|    Metrics    | Nvidia prices | QQQ prices    |
+| ------------- |:-------------:|:-------------:|
+| Minimum       | 4.81          | 94.23         |
+| Maximum       | 335.17        | 405.57        |
+| Mean          | 68.8194       | 192.4404      |
+| Std deviation | 70.3984       | 86.0612       |
+
+The correlation between Nvidia and QQQ is 0.9575 which is not surprising considering the fact that QQQ is a technology index which contains Nvidia among its 100 companies. This correlation may have an impact on the result of the complex model.
+
+### Basic and Complex LSTM models
+
+![Comparison](images/Basic-complex-comparison.png)
+
+Based on this comparison chart, it can be said, that the complex model is almost always more accurate than the simple one. In fact, it is true in general that the more factors you use to determine the price of a stock, the better the results are going to be. It was excepted purely based on the Mean Absolute Error metric which in the case of the complex model was 0.07 as opposed to the 0.09 of the base model.
+
+Both results are more or less the same up until Day 80. I would attribute it to the rapidly increasing volutility of the asset starting somewhere around Day 70. In the first half of the prediction cycle, linear extrapolation is fairly close to the actual prices however, it is way off from Day 80. This observation was further exaggerated by quadratic extrapolation.
+
+| Model   | First half | Second half |
+| ------- |:----------:|:-----------:|
+| Basic   | 0.04       | 0.15        |
+| Complex | 0.03       | 0.11        |
+
+This comparison of MAE on the first and second parts also proves this.
+
+### LSTM and ESN models
+
+![Comparison](images/Lstm-esn-comparison.png)
+
+The same separation line at Day 80 can be seen in this chart as well. This gives us further proof that this is happening due to volutility, simply because of the nature of ESN models.
+
+| Model   | First half | Second half |
+| ------- |:----------:|:-----------:|
+| LSTM    | 0.03       | 0.11        |
+| ESN     | 0.05       | 0.14        |
+
+The comparison of MAE also indicates this difference in accuracy.
+
+The two areas where the ESN model clearly outshines both of my LSTM models are training time, and having the ability to give somewhat accurate predictions for multiple days ahead in the future.
+
+## Ways to improve the models
+
+Even though I have spent a considerable amount of time on the models, they are by no means perfect. Here are a few ways which might help with accuracy:
+
+- Longer training sequence
+- Using other metrics such as moving average, volutility, and other stocks or indexes in tandem with previous prices
 
 ## Author
 
