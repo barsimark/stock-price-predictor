@@ -52,6 +52,16 @@ The structure of the model:
 - Hidden layers: multiple LSTM and Dropout layers
 - Output: predicted stock price for the next day
 
+```
+LSTM(256, return_sequences=True, input_shape = (sequence_length, 1))
+Dropout(0.3)
+LSTM(128, return_sequences=True)
+Dropout(0.3)
+LSTM(64)
+Dropout(0.3)
+Dense(1)
+```
+
 Performance on the test dataset:
 
 ![Basic model performance](images/Basic-model-prediction.png)
@@ -75,6 +85,16 @@ The structure of the model:
 - Input: 2D stock price sequence
 - Hidden layers: multiple LSTM and Dropout layers
 - Output: predicted stock preice for the very next day
+
+```
+LSTM(512, return_sequences=True, input_shape = (sequence_length, 2))
+Dropout(0.3)
+LSTM(256, return_sequences=True)
+Dropout(0.3)
+LSTM(128)
+Dropout(0.3)
+Dense(1)
+```
 
 Performance on the test dataset:
 
